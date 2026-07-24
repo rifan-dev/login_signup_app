@@ -1,15 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_app/views/main_home_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'utils/app_theme.dart';
 import 'controllers/auth_controller.dart';
 import 'views/login_screen.dart';
 
+const String supabaseUrl = 'https://aisrutgsajmpmqnwfzbx.supabase.co';
+const String supabaseAnonKey = 'sb_publishable_-J61j6hKdriPqsBmX1ydTg_y_ijL8tG';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Supabase.initialize(
+    url: supabaseUrl,
+    // ignore: deprecated_member_use
+    anonKey: supabaseAnonKey,
+  );
 
   runApp(
     MultiProvider(
@@ -30,23 +36,24 @@ class MyApp extends StatelessWidget {
       title: 'Login Signup App',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: AuthWrapper(),
+      home: const AuthWrapper(),
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
+    return StreamBuilder<AuthState>(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
-
-        if (snapshot.hasData) {
-          return MainHomeScreen();
+        final session = snapshot.data?.session ?? Supabase.instance.client.auth.currentSession;
+        if (session != null) {
+          return const MainHomeScreen();
         }
-
-        return LoginScreen();
+        return const LoginScreen();
       },
     );
   }

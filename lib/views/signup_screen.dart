@@ -18,14 +18,49 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  void _signup() {
+  Future<void> _signup() async {
     if (_formKey.currentState!.validate()) {
-      // Simulate successful signup navigation
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account Created Successfully')),
+      final authController = Provider.of<AuthController>(
+        context,
+        listen: false,
       );
-      Navigator.pop(context); // Go back to login
+
+      try {
+        await authController.signup(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Account Created Successfully')),
+          );
+          Navigator.pop(context);
+        }
+      } on Exception catch (e) {
+        if (mounted) {
+          _showErrorSnackBar(e.toString());
+        }
+      }
     }
+  }
+
+  void _showErrorSnackBar(String message) {
+    final cleanMsg = message.replaceAll('Exception:', '').trim();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(child: Text(cleanMsg)),
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   @override

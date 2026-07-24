@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_app/utils/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final user = FirebaseAuth.instance.currentUser;
 
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
