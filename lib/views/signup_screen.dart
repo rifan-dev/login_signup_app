@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../auth/auth_service.dart';
 import '../controllers/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -18,17 +19,20 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  final authService = AuthService();
+
   Future<void> _signup() async {
     if (_formKey.currentState!.validate()) {
-      final authController = Provider.of<AuthController>(
-        context,
-        listen: false,
-      );
+      // final authController = Provider.of<AuthController>(
+      //   context,
+      //   listen: false,
+      // );
 
       try {
-        await authController.signup(
+        await authService.signUp(
           email: _emailController.text.trim(),
           password: _passwordController.text,
+          username: _usernameController.text.trim(),
         );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

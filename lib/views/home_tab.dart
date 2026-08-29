@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import '../auth/auth_service.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = AuthService();
+    final currentUsername = authService.getCurrentUsername();
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +25,7 @@ class HomeTab extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           Text(
-            'User',
+            currentUsername.toString(),
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),

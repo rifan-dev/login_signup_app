@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../controllers/auth_controller.dart';
+import '../auth/auth_service.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = Supabase.instance.client.auth.currentUser;
+
+    final authService = AuthService();
+
+    final currentEmail = authService.getCurrentUserEmail();
 
     return Center(
       child: Column(
@@ -28,18 +29,17 @@ class ProfileTab extends StatelessWidget {
             'User Profile',
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          if (user?.email != null) ...[
+          if (currentEmail != null) ...[
             const SizedBox(height: 8),
             Text(
-              user!.email!,
+              currentEmail,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
           const SizedBox(height: 32),
           ElevatedButton.icon(
             onPressed: () async {
-              final authController = Provider.of<AuthController>(context, listen: false);
-              await authController.logout();
+              await authService.signOut();
             },
             icon: const Icon(Icons.logout),
             label: const Text('Logout'),

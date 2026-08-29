@@ -13,7 +13,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: supabaseUrl,
-    // ignore: deprecated_member_use
     anonKey: supabaseAnonKey,
   );
 

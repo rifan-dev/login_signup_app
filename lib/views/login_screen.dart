@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:login_signup_app/utils/app_theme.dart';
+import 'package:login_signup_app/views/main_home_screen.dart';
 import 'package:provider/provider.dart';
+import '../auth/auth_service.dart';
 import '../controllers/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -17,19 +19,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  
+  final authService = AuthService();
 
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      final authController = Provider.of<AuthController>(
-        context,
-        listen: false,
-      );
+      // final authController = Provider.of<AuthController>(
+      //   context,
+      //   listen: false,
+      // );
 
       try {
-        await authController.login(
+        await authService.signIn(
           email: _emailController.text,
           password: _passwordController.text,
         );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainHomeScreen()),
+          );
+        }
       } on Exception catch (e) {
         _showErrorSnackBar(e.toString());
       }
@@ -38,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _showErrorSnackBar(String message) {
     final cleanMsg = message.replaceAll('Exception:', '').trim();
+    print(cleanMsg);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
