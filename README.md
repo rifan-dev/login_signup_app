@@ -1,17 +1,32 @@
-# login_signup_app
+# 🔐 Login & Signup App
 
-A new Flutter project.
+A **Flutter learning project** for building a basic authentication system with separate **Admin** and **User panels**.
 
-## Getting Started
+## 🚧 Status
 
-This project is a starting point for a Flutter application.
+**Under Construction** — currently working on the login/signup flow. Admin and User panels will be added as development continues.
 
-A few resources to get you started if this is your first Flutter project:
+## 🎯 Purpose
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Built to learn and practice:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Flutter & Dart
+* Login and Signup
+* Authentication
+* Form validation
+* Role-based access
+* Admin & User panels
+
+## 🛠️ Tech Stack
+
+* Flutter
+* Dart
+
+## ▶️ Run the Project
+
+```bash
+flutter pub get
+flutter run
+```
+
+> This is a learning project and is actively under development.
