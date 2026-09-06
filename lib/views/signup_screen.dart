@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/auth_controller.dart';
+import '../auth/auth_service.dart';
+import '../provider/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -18,14 +19,52 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  void _signup() {
+  final authService = AuthService();
+
+  Future<void> _signup() async {
     if (_formKey.currentState!.validate()) {
-      // Simulate successful signup navigation
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account Created Successfully')),
-      );
-      Navigator.pop(context); // Go back to login
+      // final authController = Provider.of<AuthController>(
+      //   context,
+      //   listen: false,
+      // );
+
+      try {
+        await authService.signUp(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          username: _usernameController.text.trim(),
+        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Account Created Successfully')),
+          );
+          Navigator.pop(context);
+        }
+      } on Exception catch (e) {
+        if (mounted) {
+          _showErrorSnackBar(e.toString());
+        }
+      }
     }
+  }
+
+  void _showErrorSnackBar(String message) {
+    final cleanMsg = message.replaceAll('Exception:', '').trim();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(child: Text(cleanMsg)),
+          ],
+        ),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   @override
