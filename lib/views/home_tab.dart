@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../auth/auth_service.dart';
+import 'package:login_signup_app/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -7,8 +8,8 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final authService = AuthService();
-    final currentUsername = authService.getCurrentUsername();
+    final authProvider = context.watch<AuthProvider>();
+    
 
     return Center(
       child: Column(
@@ -25,7 +26,7 @@ class HomeTab extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           Text(
-            currentUsername.toString(),
+            authProvider.currentUsername ?? 'User',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),

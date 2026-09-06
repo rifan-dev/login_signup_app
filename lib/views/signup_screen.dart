@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_service.dart';
-import '../controllers/auth_controller.dart';
+import '../provider/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 

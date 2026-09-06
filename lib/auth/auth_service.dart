@@ -56,8 +56,17 @@ class AuthService {
 
   // Sign out the current user
   Future<void> signOut() async {
-    await _client.auth.signOut();
+    try {
+      await _client.auth.signOut(scope: SignOutScope.global);
+    } on AuthException catch (e) {
+      throw Exception(e.message);
+    } catch (e) {
+      throw Exception('Sign-out failed: $e');
+    }
   }
+
+  
+  
 
   // Get the current userEmail
   String? getCurrentUserEmail() {
@@ -77,7 +86,8 @@ class AuthService {
               .select('username')
               .eq('id', userId)
               .single();
-      return data['username'] as String?;
+      String? username = data['username'] as String?;
+      return username;
     } catch (e) {
       print('getCurrentUsername error: $e');
       return null;

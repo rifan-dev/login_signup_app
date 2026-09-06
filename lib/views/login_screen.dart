@@ -3,7 +3,7 @@ import 'package:login_signup_app/utils/app_theme.dart';
 import 'package:login_signup_app/views/main_home_screen.dart';
 import 'package:provider/provider.dart';
 import '../auth/auth_service.dart';
-import '../controllers/auth_controller.dart';
+import '../provider/auth_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 import 'signup_screen.dart';
